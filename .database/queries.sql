@@ -1,21 +1,23 @@
--- CREATE TABLE Users (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        -- username TEXT NOT NULL,
-                        -- password TEXT NOT NULL,
-                        -- display_name TEXT);
+CREATE TABLE Users (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        username TEXT NOT NULL,
+                        password TEXT NOT NULL,
+                        display_name TEXT);
 
--- CREATE TABLE Movies (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                        -- movie_name TEXT NOT NULL,
-                        -- release_date DATE,
-                        -- movie_description TEXT NOT NULL,
-                        -- genre TEXT NOT NULL);
 
--- CREATE TABLE Reviews (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        -- title TEXT NOT NULL,
-                        -- review_date DATE,
-                        -- rating INTEGER
-                        -- review_text TEXT NOT NULL,
-                        -- movie_id INTEGER,
-                        -- user_id INTEGER);
+CREATE TABLE Movies (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                        movie_name TEXT NOT NULL,
+                        release_date DATE,
+                        movie_description TEXT NOT NULL,
+                        genre TEXT NOT NULL);
+
+
+CREATE TABLE Reviews (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        title TEXT NOT NULL,
+                        review_date DATE,
+                        rating INTEGER,
+                        review_text TEXT NOT NULL,
+                        movie_id INTEGER,
+                        user_id INTEGER);
 
 INSERT INTO Users (username, password, display_name) VALUES
                     ('awesomejim14', 'scrypt:32768:8:1$ZIUB1D5lCNl2GZ5w$4de3cadd75e3f03617e0c7423a3aab85a84fd9dea009295ce41d438e52da3cbc0b64def6ecbaaef13255c4918585c15e6c313d8d98d64f37c37d22b3e25bf04e', 'Jim'),
