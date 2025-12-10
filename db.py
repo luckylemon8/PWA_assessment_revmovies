@@ -75,3 +75,17 @@ def GetReviews(movie_id):
     ).fetchall()
     db.close()
     return reviews
+
+
+def AddReview(title, review_date, rating, review_text, movie_id, user_id):
+
+    # Check if any boxes were empty
+    if review_date is None or title is None:
+        return False
+
+    # Get the DB and add the guess
+    db = GetDB()
+    db.execute("INSERT INTO Reviews(title, review_date, rating, review_text, movie_id, user_id) VALUES (?, ?, ?, ?, ?, ?)",(title, review_date, rating, review_text, movie_id, user_id,))
+    db.commit()
+
+    return True

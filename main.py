@@ -20,7 +20,7 @@ def Login():
         user = db.CheckLogin(username, password)
         if user:
             # Yes! Save their username and id then
-            session["id"] = user["id"]
+            session["user_id"] = user["id"]
             session["username"] = user["username"]
 
             # Send them back to the homepage
@@ -63,6 +63,27 @@ def Movie(id):
     reviewsData = db.GetReviews(id)
 
     return render_template("movie.html", movie=movieData, reviews=reviewsData)
+
+
+@app.route("/add/<movie_id>", methods=["GET", "POST"])
+def Add(movie_id):
+    movieData = db.GetMovie(movie_id)
+    # Did they click submit?
+    if request.method == "POST":
+        title = request.form["title"]
+        review_date = request.form["review_date"]
+        rating = request.form["rating"]
+        review_text = request.form["review_text"]
+        user_id = session["user_id"]
+
+        # Send the data to add our new guess to the db
+        db.AddReview(title, review_date, rating, review_text, movie_id, user_id)
+
+        reviewsData = db.GetReviews(movie_id)
+
+        return render_template("movie.html", movie=movieData, reviews=reviewsData)
+
+    return render_template("add.html", movie=movieData)
 
 
 app.run(debug=True, port=5000)
