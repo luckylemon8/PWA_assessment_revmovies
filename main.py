@@ -7,7 +7,7 @@ app.secret_key = "revmovies"
 
 @app.route("/")
 def Home():
-    return render_template("base.html")
+    return render_template("index.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -67,6 +67,7 @@ def Movie(id):
 
 @app.route("/add/<movie_id>", methods=["GET", "POST"])
 def Add(movie_id):
+
     movieData = db.GetMovie(movie_id)
     # Did they click submit?
     if request.method == "POST":
@@ -83,7 +84,37 @@ def Add(movie_id):
 
         return render_template("movie.html", movie=movieData, reviews=reviewsData)
 
-    return render_template("add.html", movie=movieData)
+    return render_template("addreview.html", movie=movieData)
+
+
+@app.route("/edit/<id>", methods=["GET", "POST"])
+def Edit(id):
+    reviewData = db.GetReview(id)
+    movieData = db.GetMovie(reviewData["movie_id"])
+
+    if request.method == "POST":
+        title = request.form["title"]
+        review_date = request.form["review_date"]
+        rating = request.form["rating"]
+        review_text = request.form["review_text"]
+        user_id = session["user_id"]
+        db.EditReview(title, review_date, rating, review_text, id)
+
+        reviewsData = db.GetReviews(reviewData["movie_id"])
+        return render_template("movie.html", movie=movieData, reviews=reviewsData)
+
+    return render_template("editreview.html", movie=movieData, review=reviewData)
+
+
+@app.route("/delete/<id>")
+def Delete(id):
+    reviewData = db.GetReview(id)
+    movieData = db.GetMovie(reviewData["movie_id"])
+
+    db.DeleteReview(id)
+
+    reviewsData = db.GetReviews(reviewData["movie_id"])
+    return render_template("movie.html", movie=movieData, reviews=reviewsData)
 
 
 app.run(debug=True, port=5000)

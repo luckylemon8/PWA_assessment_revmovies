@@ -1,62 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+{% extends "base.html" %} {% block content %}
 
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self';" />
+<h1>{{movie['movie_name']}}</h1>
+<h2>{{movie['release_date']}} {{movie['genre']}}</h2>
+<p>{{movie['movie_description']}}</p>
+<h3>{{movie['movie_name']}} Reviews</h3>
 
-    <title>RevMovies</title>
+<table class="movie_table">
+  <thead>
+    <th>title</th>
+    <th>review date</th>
+    <th>rating</th>
+    <th>review</th>
+  </thead>
 
-    <link rel="stylesheet" href="/static/css/home.css" />
-    <link rel="manifest" href="/static/manifest.json" />
-    <link rel="icon" type="image/x-icon" href="/static/images/favicon.png" />
-  </head>
+  <tbody>
+    {%for review in reviews%}
+    <tr>
+      <td>{{ review['title']}}</td>
+      <td>{{ review['review_date']}}</td>
+      <td>{{ review['rating']}}</td>
+      <td>{{ review['review_text']}}</td>
+      <td>
+        <a href="/edit/{{review['id']}}"><button>Edit review</button></a>
+      </td>
+      <td>
+        <a href="/delete/{{review['id']}}"><button>Delete review</button></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
-  <h1 class="banner">Rev Movies</h1>
+<a href="/add/{{movie['id']}}"><button>Add review</button></a>
 
-  <!-- Include a navigation menu -->
-  <nav>
-    <a href="/">Home</a>
-    {% if not session['username'] %}
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
-    {% else %}
-    <a href="/logout">Logout</a>
-    {% endif %}
-    <a href="/movie_list">Movie List</a>
-    <a href="/review_list">Review List</a>
-  </nav>
-
-  <h1>{{movie['movie_name']}}</h1>
-  <h2>{{movie['release_date']}} {{movie['genre']}}</h2>
-  <p>{{movie['movie_description']}}</p>
-  <h3>{{movie['movie_name']}} Reviews</h3>
-
-  {% block content %}
-
-  <table class="movie_table">
-    <thead>
-      <th>title</th>
-      <th>review date</th>
-      <th>rating</th>
-      <th>review</th>
-    </thead>
-
-    <tbody>
-      {%for review in reviews%}
-      <tr>
-        <td>{{ review['title']}}</td>
-        <td>{{ review['review_date']}}</td>
-        <td>{{ review['rating']}}</td>
-        <td>{{ review['review_text']}}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <a href="/add/{{movie['id']}}"><button>Add guess</button></a>
-
-  {% endblock %}
-</html>
+{% endblock %}

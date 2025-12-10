@@ -77,15 +77,62 @@ def GetReviews(movie_id):
     return reviews
 
 
+def GetReview(id):
+    db = GetDB()
+    review = db.execute("SELECT * FROM Reviews WHERE id=?", (id,)).fetchone()
+    db.close()
+    return review
+
+
 def AddReview(title, review_date, rating, review_text, movie_id, user_id):
 
     # Check if any boxes were empty
     if review_date is None or title is None:
         return False
 
-    # Get the DB and add the guess
+    # Get the DB and add the review
     db = GetDB()
-    db.execute("INSERT INTO Reviews(title, review_date, rating, review_text, movie_id, user_id) VALUES (?, ?, ?, ?, ?, ?)",(title, review_date, rating, review_text, movie_id, user_id,))
+    db.execute(
+        "INSERT INTO Reviews(title, review_date, rating, review_text, movie_id, user_id) VALUES (?, ?, ?, ?, ?, ?)",
+        (
+            title,
+            review_date,
+            rating,
+            review_text,
+            movie_id,
+            user_id,
+        ),
+    )
+    db.commit()
+
+    return True
+
+
+def EditReview(title, review_date, rating, review_text, id):
+
+    db = GetDB()
+    db.execute(
+        "UPDATE Reviews SET title = ?, review_date = ?, rating = ?, review_text = ? WHERE id = ?",
+        (
+            title,
+            review_date,
+            rating,
+            review_text,
+            id,
+        ),
+    )
+    db.commit()
+
+    return True
+
+
+def DeleteReview(id):
+
+    db = GetDB()
+    db.execute(
+        "DELETE From Reviews WHERE id=?",
+        (id,),
+    )
     db.commit()
 
     return True

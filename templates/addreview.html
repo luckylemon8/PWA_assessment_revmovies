@@ -1,0 +1,18 @@
+{% extends "base.html" %} {% block content %}
+
+<h2>Add a review</h2>
+
+<p>{{movie['movie_name']}}</p>
+
+<form action="/add/{{movie['id']}}" method="post">
+  <label>Title: </label>
+  <input type="text" name="title" id="title" />
+  <label> Review Date: </label>
+  <input type="date" name="review_date" id="review_date" />
+  <label>Rating: </label>
+  <input type="integer" name="rating" id="rating" />
+  <label>Review Text:</label>
+  <input type="text" name="review_text" id="review_text" />
+  <input type="submit" value="Add Review" />
+</form>
+{% endblock %}
